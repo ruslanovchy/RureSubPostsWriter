@@ -85,15 +85,30 @@ builder.Services.AddSingleton(consumerConfig);
 
 #endregion
 
+#region Http
+
+var ProfileApi = builder.Configuration["Http:ProfileApi"];
+
+if (string.IsNullOrEmpty(ProfileApi))
+{
+    throw new Exception("Bad configuration! Http:Api is null or empty!");
+}
+
+builder.Services.AddHttpClient<IProfileApiClient, ProfileApiClient>(client => {
+    client.BaseAddress = new Uri(ProfileApi);
+});
+
+#endregion
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
+    app.UseHttpsRedirection();
 }
 
-app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthentication();

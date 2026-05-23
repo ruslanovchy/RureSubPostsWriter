@@ -17,5 +17,9 @@ public class PostsWriterDbContext(DbContextOptions options) : DbContext(options)
 
         modelBuilder.Entity<Post>()
             .HasIndex(p => p.AuthorId);
+
+        modelBuilder.Entity<Post>()
+            .Property(p => p.Content)
+            .HasColumnType("jsonb");
     }
 }

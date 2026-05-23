@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 
 namespace RureSubPostsWriter.Models.Dtos;
 
@@ -8,6 +9,5 @@ public class CreatePostDto
     [RegularExpression(PostsWriterValidator.TITLE_REGEX)]
     public string Title { get; set; } = string.Empty;
     [Required]
-    [RegularExpression(PostsWriterValidator.TEXT_REGEX)]
-    public string BodyText { get; set; } = null!;
+    public JsonElement Content { get; set; }
 }

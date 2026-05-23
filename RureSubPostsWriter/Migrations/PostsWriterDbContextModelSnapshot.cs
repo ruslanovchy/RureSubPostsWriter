@@ -31,9 +31,9 @@ namespace RureSubPostsWriter.Migrations
                     b.Property<Guid>("AuthorId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("BodyText")
+                    b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("jsonb");
 
                     b.Property<bool>("IsEdited")
                         .HasColumnType("boolean");

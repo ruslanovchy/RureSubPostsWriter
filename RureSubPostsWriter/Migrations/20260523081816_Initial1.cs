@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RureSubPostsWriter.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Initial1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,7 +34,7 @@ namespace RureSubPostsWriter.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     AuthorId = table.Column<Guid>(type: "uuid", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
-                    BodyText = table.Column<string>(type: "text", nullable: false),
+                    Content = table.Column<string>(type: "jsonb", nullable: false),
                     IsEdited = table.Column<bool>(type: "boolean", nullable: false),
                     PostedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },

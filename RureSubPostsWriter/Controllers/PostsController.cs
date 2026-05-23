@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RureSubPostsWriter.Models;
 using RureSubPostsWriter.Models.Dtos;
+using RureSubPostsWriter.Services;
 using RureSubPostWriter.Models;
 using System.Security.Claims;
 using System.Text.Json;
@@ -13,7 +14,11 @@ public class PostsController : Controller
 {
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> CreatePost([FromServices]PostsWriterDbContext db, [FromForm]CreatePostDto dto)
+    public async Task<IActionResult> CreatePost(
+        [FromServices]PostsWriterDbContext db, 
+        [FromServices]IProfileApiClient profilesService,
+        [FromServices]IConfiguration config,
+        [FromBody]CreatePostDto dto)
     {
         if (!ModelState.IsValid)
         {
@@ -29,19 +34,43 @@ public class PostsController : Controller
             return Unauthorized();
         }
 
+        var profile = await profilesService.GetProfile(userId);
+
+        if (profile == null)
+        {
+            return NotFound();
+        }
+
         var post = new Post
         {
             AuthorId = userId,
-            BodyText = dto.BodyText,
+            Content = dto.Content.GetRawText(),
             Title = dto.Title,
             PostedAt = DateTime.UtcNow
+        };
+
+        var objectToReader = new
+        {
+            post.Id,
+            post.AuthorId,
+            post.Content,
+            post.Title,
+            post.PostedAt,
+            Author = new
+            {
+                profile.Id,
+                profile.UserName,
+                profile.DisplayName,
+                profile.AvatarUrl,
+                profile.IsVerified
+            }
         };
 
         var outboxMessage = new OutboxMessage
         {
             OccuredOn = DateTime.UtcNow,
             Topic = "post-created",
-            Content = JsonSerializer.Serialize(post)
+            Content = JsonSerializer.Serialize(objectToReader)
         };
 
         db.Posts.Add(post);
@@ -50,5 +79,11 @@ public class PostsController : Controller
         await db.SaveChangesAsync();
 
         return Ok();
+    }
+
+    [HttpGet]
+    public IActionResult GetPosts()
+    {
+        return Ok("posts!");
     }
 }

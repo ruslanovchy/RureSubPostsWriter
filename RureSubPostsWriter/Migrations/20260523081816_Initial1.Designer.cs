@@ -12,8 +12,8 @@ using RureSubPostWriter.Models;
 namespace RureSubPostsWriter.Migrations
 {
     [DbContext(typeof(PostsWriterDbContext))]
-    [Migration("20260516092735_Initial")]
-    partial class Initial
+    [Migration("20260523081816_Initial1")]
+    partial class Initial1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,9 +34,9 @@ namespace RureSubPostsWriter.Migrations
                     b.Property<Guid>("AuthorId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("BodyText")
+                    b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("jsonb");
 
                     b.Property<bool>("IsEdited")
                         .HasColumnType("boolean");
