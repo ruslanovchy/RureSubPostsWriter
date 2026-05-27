@@ -6,6 +6,7 @@ namespace RureSubPostWriter.Models;
 public class PostsWriterDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<OutboxMessage> OutboxMessages { get; set; }
+    public DbSet<InboxMessage> InboxMessages { get; set; }
     public DbSet<Post> Posts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

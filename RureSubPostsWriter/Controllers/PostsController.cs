@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RureSubPostsWriter.Models;
 using RureSubPostsWriter.Models.Dtos;
 using RureSubPostsWriter.Services;
@@ -17,7 +18,6 @@ public class PostsController : Controller
     public async Task<IActionResult> CreatePost(
         [FromServices]PostsWriterDbContext db, 
         [FromServices]IProfileApiClient profilesService,
-        [FromServices]IConfiguration config,
         [FromBody]CreatePostDto dto)
     {
         if (!ModelState.IsValid)
@@ -81,9 +81,49 @@ public class PostsController : Controller
         return Ok();
     }
 
-    [HttpGet]
-    public IActionResult GetPosts()
+    [HttpDelete]    
+    [Authorize]
+    public async Task<IActionResult> DeletePost(
+        [FromServices] PostsWriterDbContext db,
+        [FromQuery] Guid postId)
     {
-        return Ok("posts!");
-    }
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+
+        if (userIdClaim == null ||
+            string.IsNullOrEmpty(userIdClaim.Value) ||
+            !Guid.TryParse(userIdClaim.Value, out var userId))
+        {
+            return Unauthorized();
+        }
+
+        var postToDelete = await db.Posts.FirstOrDefaultAsync(p => p.Id == postId && p.AuthorId == userId);
+
+        if (postToDelete == null)
+        {
+            return NotFound();
+        }
+
+        db.Posts.Remove(postToDelete);
+
+        var outboxMessage = new OutboxMessage
+        {
+            OccuredOn = DateTime.UtcNow,
+            Topic = "post-deleted",
+            Content = JsonSerializer.Serialize(new
+            {
+                Id = postId
+            })
+        };
+
+        db.OutboxMessages.Add(outboxMessage);
+
+        await db.SaveChangesAsync();
+
+        return Ok();
+    } 
 }

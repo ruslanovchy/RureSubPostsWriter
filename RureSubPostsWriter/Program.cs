@@ -12,6 +12,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddHostedService<OutboxProcessor>();
 builder.Services.AddHostedService<OutboxCleaner>();
+builder.Services.AddHostedService<PostLikedProcessor>();
 
 #region Db
 
