@@ -94,7 +94,7 @@ if (string.IsNullOrEmpty(ProfileApi))
     throw new Exception("Bad configuration! Http:Api is null or empty!");
 }
 
-builder.Services.AddHttpClient<IProfileApiClient, ProfileApiClient>(client => {
+builder.Services.AddHttpClient<IProfileService, HttpProfileService>(client => {
     client.BaseAddress = new Uri(ProfileApi);
 });
 

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace RureSubPostsWriter.Services;
 
-public class ProfileApiClient(HttpClient client) : IProfileApiClient
+public class HttpProfileService(HttpClient client) : IProfileService
 {
     private readonly HttpClient client = client;
 

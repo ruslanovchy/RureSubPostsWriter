@@ -17,7 +17,7 @@ public class PostsController : Controller
     [Authorize]
     public async Task<IActionResult> CreatePost(
         [FromServices]PostsWriterDbContext db, 
-        [FromServices]IProfileApiClient profilesService,
+        [FromServices]IProfileService profilesService,
         [FromForm]CreatePostDto dto)
     {
         if (!ModelState.IsValid)

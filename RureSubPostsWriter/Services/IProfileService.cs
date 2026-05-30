@@ -2,7 +2,7 @@
 
 namespace RureSubPostsWriter.Services;
 
-public interface IProfileApiClient
+public interface IProfileService
 {
     Task<GetProfileDto?> GetProfile(Guid id);
 }
