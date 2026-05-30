@@ -9,5 +9,5 @@ public class CreatePostDto
     [RegularExpression(PostsWriterValidator.TITLE_REGEX)]
     public string Title { get; set; } = string.Empty;
     [Required]
-    public JsonElement Content { get; set; }
+    public string Content { get; set; }
 }

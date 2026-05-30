@@ -18,7 +18,7 @@ public class PostsController : Controller
     public async Task<IActionResult> CreatePost(
         [FromServices]PostsWriterDbContext db, 
         [FromServices]IProfileApiClient profilesService,
-        [FromBody]CreatePostDto dto)
+        [FromForm]CreatePostDto dto)
     {
         if (!ModelState.IsValid)
         {
@@ -44,7 +44,7 @@ public class PostsController : Controller
         var post = new Post
         {
             AuthorId = userId,
-            Content = dto.Content.GetRawText(),
+            Content = dto.Content,
             Title = dto.Title,
             PostedAt = DateTime.UtcNow
         };
