@@ -100,6 +100,21 @@ builder.Services.AddHttpClient<IProfileService, HttpProfileService>(client => {
 
 #endregion
 
+#region Cors
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Development", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173", "http://localhost")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
+#endregion
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -107,6 +122,10 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
     app.UseHttpsRedirection();
+}
+else
+{
+    app.UseCors("Development");
 }
 
 app.UseRouting();
