@@ -1,17 +1,16 @@
 ﻿using Confluent.Kafka;
 using Microsoft.EntityFrameworkCore;
 using RureSubPostWriter.Models;
-using System.Text.Json;
 
-namespace RureSubPostsWriter.Services;
+namespace RureSubPostsWriter.Workers;
 
-public class OutboxProcessor : BackgroundService
+public class OutboxWorker : BackgroundService
 {
     private readonly ProducerConfig config;
     private readonly IServiceScopeFactory scopeFactory;
-    private readonly ILogger<OutboxProcessor> logger;
+    private readonly ILogger<OutboxWorker> logger;
 
-    public OutboxProcessor(ProducerConfig config, IServiceScopeFactory scopeFactory, ILogger<OutboxProcessor> logger)
+    public OutboxWorker(ProducerConfig config, IServiceScopeFactory scopeFactory, ILogger<OutboxWorker> logger)
     {
         this.config = config;
         this.scopeFactory = scopeFactory;

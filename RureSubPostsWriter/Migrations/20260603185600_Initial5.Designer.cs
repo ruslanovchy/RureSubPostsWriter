@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RureSubPostWriter.Models;
@@ -11,9 +12,11 @@ using RureSubPostWriter.Models;
 namespace RureSubPostsWriter.Migrations
 {
     [DbContext(typeof(PostsWriterDbContext))]
-    partial class PostsWriterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260603185600_Initial5")]
+    partial class Initial5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

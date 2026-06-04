@@ -8,13 +8,16 @@ public class PostsWriterDbContext(DbContextOptions options) : DbContext(options)
     public DbSet<OutboxMessage> OutboxMessages { get; set; }
     public DbSet<InboxMessage> InboxMessages { get; set; }
     public DbSet<Post> Posts { get; set; }
+    public DbSet<MediaFile> MediaFiles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<OutboxMessage>().ToTable("OutboxMessages");
+        modelBuilder.Entity<InboxMessage>().ToTable("InboxMessages");
         modelBuilder.Entity<Post>().ToTable("Posts");
+        modelBuilder.Entity<MediaFile>().ToTable("MediaFiles");
 
         modelBuilder.Entity<Post>()
             .HasIndex(p => p.AuthorId);

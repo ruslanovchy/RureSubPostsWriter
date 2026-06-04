@@ -4,5 +4,5 @@ namespace RureSubPostsWriter.Services;
 
 public interface IProfileService
 {
-    Task<GetProfileDto?> GetProfile(Guid id);
+    Task<ProfileResponseDto?> GetProfile(Guid id);
 }

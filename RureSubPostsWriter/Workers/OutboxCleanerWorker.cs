@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RureSubPostWriter.Models;
 
-namespace RureSubPostsWriter.Services;
+namespace RureSubPostsWriter.Workers;
 
-public class OutboxCleaner(IServiceScopeFactory scopeFactory) : BackgroundService
+public class OutboxCleanerWorker(IServiceScopeFactory scopeFactory) : BackgroundService
 {
     private readonly IServiceScopeFactory scopeFactory = scopeFactory;
 

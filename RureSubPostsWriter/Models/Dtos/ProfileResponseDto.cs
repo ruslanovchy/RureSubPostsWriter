@@ -1,6 +1,6 @@
 ﻿namespace RureSubPostsWriter.Models.Dtos;
 
-public class GetProfileDto
+public class ProfileResponseDto
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public Guid UserId { get; set; }

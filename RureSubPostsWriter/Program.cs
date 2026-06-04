@@ -1,8 +1,10 @@
+using Amazon.S3;
 using Confluent.Kafka;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RureSubPostsWriter.Services;
+using RureSubPostsWriter.Workers;
 using RureSubPostWriter.Models;
 using System.Text;
 
@@ -10,8 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddHostedService<OutboxProcessor>();
-builder.Services.AddHostedService<OutboxCleaner>();
+builder.Services.AddHostedService<OutboxWorker>();
+builder.Services.AddHostedService<OutboxCleanerWorker>();
 
 #region Db
 
@@ -112,6 +114,27 @@ builder.Services.AddCors(options =>
             .AllowCredentials();
     });
 });
+
+#endregion
+
+#region S3
+
+var s3ServiceURL = builder.Configuration["S3:ServiceURL"];
+
+if (string.IsNullOrEmpty(s3ServiceURL))
+{
+    throw new Exception("S3 was not configured!");
+}
+
+var s3Config = new AmazonS3Config
+{
+    ServiceURL = s3ServiceURL,
+    ForcePathStyle = true
+};
+
+var s3Client = new AmazonS3Client("minioadmin", "minioadmin", s3Config);
+
+builder.Services.AddSingleton(s3Client);
 
 #endregion
 

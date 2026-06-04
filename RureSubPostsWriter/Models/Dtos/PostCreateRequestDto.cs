@@ -3,11 +3,11 @@ using System.Text.Json;
 
 namespace RureSubPostsWriter.Models.Dtos;
 
-public class CreatePostDto
+public class PostCreateRequestDto
 {
     [Required]
     [RegularExpression(PostsWriterValidator.TITLE_REGEX)]
     public string Title { get; set; } = string.Empty;
-    [Required]
     public string? Content { get; set; }
+    public IFormFileCollection? MediaFiles { get; set; }
 }

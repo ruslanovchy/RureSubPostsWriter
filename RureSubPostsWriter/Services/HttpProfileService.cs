@@ -7,7 +7,7 @@ public class HttpProfileService(HttpClient client) : IProfileService
 {
     private readonly HttpClient client = client;
 
-    public async Task<GetProfileDto?> GetProfile(Guid id)
+    public async Task<ProfileResponseDto?> GetProfile(Guid id)
     {
         var response = await client.GetAsync($"?id={id}");
 
@@ -16,7 +16,7 @@ public class HttpProfileService(HttpClient client) : IProfileService
             return null;
         }
 
-        var json = await response.Content.ReadFromJsonAsync<GetProfileDto>();
+        var json = await response.Content.ReadFromJsonAsync<ProfileResponseDto>();
 
         return json;
     }
