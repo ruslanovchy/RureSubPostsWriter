@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddHostedService<OutboxWorker>();
-builder.Services.AddHostedService<OutboxCleanerWorker>();
+builder.Services.AddHostedService<CleanerWorker>();
 
 #region Db
 

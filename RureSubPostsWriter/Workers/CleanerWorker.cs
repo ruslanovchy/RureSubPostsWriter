@@ -3,7 +3,7 @@ using RureSubPostWriter.Models;
 
 namespace RureSubPostsWriter.Workers;
 
-public class OutboxCleanerWorker(IServiceScopeFactory scopeFactory) : BackgroundService
+public class CleanerWorker(IServiceScopeFactory scopeFactory) : BackgroundService
 {
     private readonly IServiceScopeFactory scopeFactory = scopeFactory;
 

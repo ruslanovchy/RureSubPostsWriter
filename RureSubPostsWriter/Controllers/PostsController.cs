@@ -123,7 +123,7 @@ public class PostsController : Controller
             MediaFiles = mediaFiles
         };
 
-        var objectToReader = new
+        var objectToKafka = new
         {
             post.Id,
             post.AuthorId,
@@ -150,7 +150,7 @@ public class PostsController : Controller
         {
             OccuredOn = DateTime.UtcNow,
             Topic = "post-created",
-            Content = JsonSerializer.Serialize(objectToReader)
+            Content = JsonSerializer.Serialize(objectToKafka)
         };
 
         db.Posts.Add(post);
@@ -198,7 +198,8 @@ public class PostsController : Controller
             Topic = "post-deleted",
             Content = JsonSerializer.Serialize(new
             {
-                Id = postId
+                Id = postId,
+                postToDelete.AuthorId
             })
         };
 

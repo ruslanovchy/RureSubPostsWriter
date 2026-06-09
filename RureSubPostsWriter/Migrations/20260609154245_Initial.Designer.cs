@@ -12,8 +12,8 @@ using RureSubPostWriter.Models;
 namespace RureSubPostsWriter.Migrations
 {
     [DbContext(typeof(PostsWriterDbContext))]
-    [Migration("20260529190907_Initial3")]
-    partial class Initial3
+    [Migration("20260609154245_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,29 @@ namespace RureSubPostsWriter.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InboxMessages");
+                    b.ToTable("InboxMessages", (string)null);
+                });
+
+            modelBuilder.Entity("RureSubPostsWriter.Models.MediaFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("MediaFiles", (string)null);
                 });
 
             modelBuilder.Entity("RureSubPostsWriter.Models.OutboxMessage", b =>
@@ -84,7 +106,6 @@ namespace RureSubPostsWriter.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasColumnType("jsonb");
 
                     b.Property<bool>("IsEdited")
@@ -102,6 +123,20 @@ namespace RureSubPostsWriter.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Posts", (string)null);
+                });
+
+            modelBuilder.Entity("RureSubPostsWriter.Models.MediaFile", b =>
+                {
+                    b.HasOne("RureSubPostsWriter.Models.Post", null)
+                        .WithMany("MediaFiles")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RureSubPostsWriter.Models.Post", b =>
+                {
+                    b.Navigation("MediaFiles");
                 });
 #pragma warning restore 612, 618
         }
